@@ -561,6 +561,8 @@ nav a.active{
 
     margin-bottom:20px;
 
+    align-items:stretch;
+
 }
 
 
@@ -656,73 +658,73 @@ nav a.active{
    BANNER PANEL
 ========================================================== */
 
+/*
+   IMPORTANT:
+
+   The banner uses width:auto + height:auto.
+
+   This keeps the original aspect ratio.
+
+   No cropping.
+   No stretching.
+   No black overlay.
+*/
+
 .banner-panel{
 
     position:relative;
-
-    min-height:430px;
 
     border-radius:15px;
 
     overflow:hidden;
 
-    background:#881337;
+    background:#ffffff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:430px;
+
+    width:100%;
 
 }
 
 
-/*
-   IMPORTANT:
-   NO BLACK SHADOW / DARK OVERLAY
-*/
+/* REMOVE DARK OVERLAY */
 
 .banner-panel::after{
 
     display:none;
 
+    content:none;
+
 }
 
 
+/* ORIGINAL IMAGE - NO CROP */
+
 .banner-panel img{
+
+    display:block;
 
     width:100%;
 
-    height:430px;
+    height:auto;
 
-    object-fit:cover;
+    max-width:100%;
+
+    max-height:430px;
+
+    object-fit:contain;
 
     object-position:center;
-
-    display:block;
 
     filter:none;
 
     opacity:1;
-
-}
-
-
-/* ==========================================================
-   BANNER TEXT
-========================================================== */
-
-.banner-overlay{
-
-    position:absolute;
-
-    left:0;
-
-    right:0;
-
-    bottom:0;
-
-    z-index:2;
-
-    color:white;
-
-    padding:30px;
-
-    text-align:center;
 
 }
 
@@ -1098,14 +1100,18 @@ tr:hover td{
 
     .banner-panel{
 
-        min-height:400px;
+        min-height:auto;
 
     }
 
 
     .banner-panel img{
 
-        height:400px;
+        max-height:none;
+
+        width:100%;
+
+        height:auto;
 
     }
 
@@ -1113,7 +1119,7 @@ tr:hover td{
 
 
 /* ==========================================================
-   TABLET / MOBILE - 800px
+   TABLET - 800px
 ========================================================== */
 
 @media(max-width:800px){
@@ -1211,13 +1217,6 @@ tr:hover td{
     }
 
 
-    .topbar p{
-
-        font-size:13px;
-
-    }
-
-
     .chart-panel{
 
         min-height:390px;
@@ -1232,16 +1231,31 @@ tr:hover td{
     }
 
 
+    /*
+       Image automatically keeps
+       its original aspect ratio.
+    */
+
     .banner-panel{
 
-        min-height:360px;
+        min-height:auto;
+
+        height:auto;
 
     }
 
 
     .banner-panel img{
 
-        height:360px;
+        width:100%;
+
+        height:auto;
+
+        max-width:100%;
+
+        max-height:none;
+
+        object-fit:contain;
 
     }
 
@@ -1299,7 +1313,9 @@ tr:hover td{
     }
 
 
-    /* CARDS */
+    /* ======================================================
+       CARDS
+    ====================================================== */
 
     .cards{
 
@@ -1362,7 +1378,9 @@ tr:hover td{
     }
 
 
-    /* CHART */
+    /* ======================================================
+       CHART
+    ====================================================== */
 
     .chart-banner-row{
 
@@ -1417,29 +1435,47 @@ tr:hover td{
     }
 
 
-    /* BANNER */
+    /* ======================================================
+       BANNER - FULL IMAGE
+    ====================================================== */
 
     .banner-panel{
 
-        min-height:300px;
+        min-height:auto;
 
-        border-radius:12px;
+        height:auto;
+
+        padding:0;
+
+        background:#ffffff;
+
+        display:block;
 
     }
 
 
     .banner-panel img{
 
-        height:300px;
+        width:100%;
 
-        min-height:300px;
+        height:auto;
 
-        object-fit:cover;
+        min-height:0;
+
+        max-width:100%;
+
+        max-height:none;
+
+        object-fit:contain;
+
+        display:block;
 
     }
 
 
-    /* FILTER */
+    /* ======================================================
+       FILTERS
+    ====================================================== */
 
     .filters{
 
@@ -1466,7 +1502,9 @@ tr:hover td{
     }
 
 
-    /* TABLE */
+    /* ======================================================
+       TABLE
+    ====================================================== */
 
     .table-wrapper{
 
@@ -1643,18 +1681,31 @@ tr:hover td{
     }
 
 
+    /*
+       Banner remains completely
+       uncropped on very small screens.
+    */
+
     .banner-panel{
 
-        min-height:260px;
+        min-height:auto;
+
+        height:auto;
 
     }
 
 
     .banner-panel img{
 
-        height:260px;
+        width:100%;
 
-        min-height:260px;
+        height:auto;
+
+        min-height:0;
+
+        max-height:none;
+
+        object-fit:contain;
 
     }
 
@@ -2040,10 +2091,17 @@ tr:hover td{
     <div class="banner-panel">
 
 
+        <!--
+            ORIGINAL IMAGE
+
+            No dark overlay
+            No crop
+            No stretching
+        -->
+
         <img
             src="banner.jpeg"
             alt="Navdurga Mitra Mandal Banner">
-
 
     </div>
 
@@ -2093,7 +2151,9 @@ tr:hover td{
     </div>
 
 
-    <!-- FILTERS -->
+    <!-- ====================================================
+         FILTERS
+    ===================================================== -->
 
     <div class="filters">
 
@@ -2113,9 +2173,7 @@ tr:hover td{
             <input
                 type="text"
                 id="searchInput"
-                placeholder="Search particular..."
-                oninput="applyFilters">
-
+                placeholder="Search particular...">
 
         </div>
 
@@ -2171,7 +2229,9 @@ tr:hover td{
     </div>
 
 
-    <!-- TABLE -->
+    <!-- ====================================================
+         TABLE
+    ===================================================== -->
 
     <div class="table-wrapper">
 
@@ -2181,33 +2241,54 @@ tr:hover td{
 
             <thead>
 
+
                 <tr>
 
+
                     <th>
+
                         Date
+
                     </th>
 
+
                     <th>
+
                         Particular
+
                     </th>
+
 
                     <th>
+
                         Payment Mode
+
                     </th>
 
+
                     <th class="amount-column">
+
                         Amount IN
+
                     </th>
 
+
                     <th class="amount-column">
+
                         Amount Out
+
                     </th>
 
+
                     <th class="amount-column">
+
                         Balance
+
                     </th>
+
 
                 </tr>
+
 
             </thead>
 
@@ -2388,7 +2469,6 @@ async function loadData(){
         );
 
         createChart();
-
 
     }
 
@@ -3245,7 +3325,7 @@ function hideError(){
 
 
 /* ==========================================================
-   SEARCH INPUT EVENT
+   SEARCH EVENT
 ========================================================== */
 
 document.getElementById(
