@@ -1,0 +1,2411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ganpati Mandal Accounts</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+/* ==========================================================
+   VARIABLES
+========================================================== */
+
+:root{
+    --primary:#e11d48;
+    --primary-dark:#be123c;
+
+    --income:#16a34a;
+    --expense:#dc2626;
+    --balance:#2563eb;
+
+    --dark:#111827;
+    --text:#374151;
+    --muted:#6b7280;
+
+    --border:#e5e7eb;
+    --bg:#f7f8fc;
+    --white:#ffffff;
+}
+
+
+/* ==========================================================
+   BODY
+========================================================== */
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+
+/* ==========================================================
+   APP
+========================================================== */
+
+.app{
+    min-height:100vh;
+    display:flex;
+}
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+    width:250px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            #881337,
+            #be123c
+        );
+
+    color:white;
+
+    padding:25px 18px;
+
+    z-index:100;
+}
+
+
+/* LOGO */
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:
+        5px
+        8px
+        30px;
+}
+
+
+.logo-icon{
+    width:48px;
+    height:48px;
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+}
+
+
+.logo h2{
+    font-size:20px;
+}
+
+
+.logo span{
+    font-size:12px;
+    opacity:.75;
+}
+
+
+/* NAV */
+
+nav{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+
+nav a{
+    text-decoration:none;
+
+    color:
+        rgba(255,255,255,.75);
+
+    padding:13px 14px;
+
+    border-radius:10px;
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    font-size:14px;
+
+    transition:.2s;
+}
+
+
+nav a:hover,
+nav a.active{
+    background:
+        rgba(255,255,255,.15);
+
+    color:white;
+}
+
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom{
+    position:absolute;
+
+    bottom:25px;
+    left:18px;
+    right:18px;
+}
+
+
+.ganpati-message{
+    background:
+        rgba(255,255,255,.1);
+
+    padding:18px;
+
+    border-radius:14px;
+
+    text-align:center;
+}
+
+
+.small-ganpati{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+
+.ganpati-message p{
+    font-size:12px;
+    line-height:1.5;
+
+    opacity:.85;
+}
+
+
+/* ==========================================================
+   MAIN
+========================================================== */
+
+.main{
+    margin-left:250px;
+
+    width:
+        calc(100% - 250px);
+
+    padding:28px;
+}
+
+
+/* ==========================================================
+   TOPBAR
+========================================================== */
+
+.topbar{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:28px;
+}
+
+
+.topbar h1{
+    color:var(--dark);
+
+    font-size:25px;
+}
+
+
+.topbar p{
+    color:var(--muted);
+
+    font-size:14px;
+
+    margin-top:5px;
+}
+
+
+/* REFRESH BUTTON */
+
+.refresh-btn{
+    border:none;
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:
+        11px
+        17px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    transition:.2s;
+}
+
+
+.refresh-btn:hover{
+    background:var(--primary-dark);
+
+    transform:translateY(-1px);
+}
+
+
+/* ==========================================================
+   ERROR
+========================================================== */
+
+.error-box{
+    display:none;
+
+    background:#fee2e2;
+
+    border:1px solid #fecaca;
+
+    color:#991b1b;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    font-size:13px;
+
+    white-space:pre-wrap;
+}
+
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.loading{
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(255,255,255,.96);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:1000;
+}
+
+
+.spinner{
+    width:42px;
+    height:42px;
+
+    border:
+        4px solid
+        #e5e7eb;
+
+    border-top-color:
+        var(--primary);
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+
+.loading p{
+    margin-top:12px;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+/* ==========================================================
+   CARDS
+========================================================== */
+
+.cards{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:18px;
+
+    margin-bottom:20px;
+}
+
+
+.card{
+    background:white;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,.03);
+
+    transition:.2s;
+}
+
+
+.card:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.06);
+}
+
+
+.card-top{
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+
+.card-icon{
+    width:40px;
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    font-size:20px;
+}
+
+
+.income-card .card-icon{
+    background:#dcfce7;
+}
+
+
+.expense-card .card-icon{
+    background:#fee2e2;
+}
+
+
+.balance-card .card-icon{
+    background:#dbeafe;
+}
+
+
+.transaction-card .card-icon{
+    background:#fef3c7;
+}
+
+
+.card-label{
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+.card h2{
+    margin-top:15px;
+
+    color:var(--dark);
+
+    font-size:25px;
+}
+
+
+.income-card h2{
+    color:var(--income);
+}
+
+
+.expense-card h2{
+    color:var(--expense);
+}
+
+
+.balance-card h2{
+    color:var(--balance);
+}
+
+
+.card p{
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-top:6px;
+}
+
+
+/* ==========================================================
+   CHART
+========================================================== */
+
+.chart-row{
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:20px;
+
+    margin-bottom:20px;
+}
+
+
+.panel{
+    background:white;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,.03);
+}
+
+
+.panel-header{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+}
+
+
+.panel-header h3{
+    color:var(--dark);
+
+    font-size:16px;
+}
+
+
+.panel-header p{
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-top:4px;
+}
+
+
+.chart-container{
+    height:300px;
+
+    max-width:600px;
+
+    margin:auto;
+}
+
+
+/* ==========================================================
+   FILTER
+========================================================== */
+
+.filters{
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:18px;
+}
+
+
+.search-box{
+    flex:1;
+
+    position:relative;
+}
+
+
+.search-box span{
+    position:absolute;
+
+    left:12px;
+    top:50%;
+
+    transform:
+        translateY(-50%);
+}
+
+
+.search-box input{
+    width:100%;
+
+    padding:
+        11px
+        12px
+        11px
+        38px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:9px;
+
+    outline:none;
+
+    font-size:13px;
+}
+
+
+.search-box input:focus{
+    border-color:
+        var(--primary);
+}
+
+
+.filters select{
+    padding:
+        0
+        12px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:9px;
+
+    background:white;
+
+    color:var(--text);
+
+    outline:none;
+
+    cursor:pointer;
+}
+
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+
+table{
+    width:100%;
+
+    min-width:850px;
+
+    border-collapse:collapse;
+}
+
+
+thead{
+    background:#f9fafb;
+}
+
+
+th{
+    padding:13px;
+
+    text-align:left;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+}
+
+
+td{
+    padding:
+        14px
+        13px;
+
+    border-top:
+        1px solid
+        #f0f0f0;
+
+    font-size:13px;
+
+    white-space:nowrap;
+}
+
+
+tr:hover td{
+    background:#fafafa;
+}
+
+
+.amount-column{
+    text-align:right;
+}
+
+
+.income-value{
+    color:var(--income);
+
+    font-weight:600;
+}
+
+
+.expense-value{
+    color:var(--expense);
+
+    font-weight:600;
+}
+
+
+.balance-value{
+    color:var(--balance);
+
+    font-weight:600;
+}
+
+
+.mode-badge{
+    display:inline-block;
+
+    padding:
+        5px
+        9px;
+
+    border-radius:20px;
+
+    background:#f3f4f6;
+
+    font-size:11px;
+}
+
+
+/* RECORD COUNT */
+
+.record-count{
+    background:#f3f4f6;
+
+    padding:
+        6px
+        10px;
+
+    border-radius:20px;
+
+    color:var(--muted);
+
+    font-size:11px;
+}
+
+
+/* ==========================================================
+   NO DATA
+========================================================== */
+
+.no-data{
+    text-align:center;
+
+    padding:45px;
+
+    display:none;
+}
+
+
+.no-data-icon{
+    font-size:40px;
+}
+
+
+.no-data h3{
+    margin-top:10px;
+
+    color:var(--dark);
+}
+
+
+.no-data p{
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:1100px){
+
+    .cards{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .sidebar{
+        width:70px;
+
+        padding:
+            20px
+            10px;
+    }
+
+
+    .logo{
+        justify-content:center;
+    }
+
+
+    .logo > div:last-child{
+        display:none;
+    }
+
+
+    nav a{
+        justify-content:center;
+
+        font-size:0;
+    }
+
+
+    nav a span{
+        font-size:18px;
+    }
+
+
+    .sidebar-bottom{
+        display:none;
+    }
+
+
+    .main{
+        margin-left:70px;
+
+        width:
+            calc(100% - 70px);
+
+        padding:18px;
+    }
+
+
+    .topbar h1{
+        font-size:19px;
+    }
+
+
+    .chart-container{
+        height:250px;
+    }
+
+}
+
+
+@media(max-width:500px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+
+    .filters{
+        flex-direction:column;
+    }
+
+
+    .filters select{
+        height:42px;
+    }
+
+
+    .topbar{
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:12px;
+    }
+
+
+    .refresh-btn{
+        width:100%;
+    }
+
+
+    .chart-container{
+        height:230px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- ========================================================
+     SIDEBAR
+======================================================== -->
+
+<aside class="sidebar">
+
+
+    <div class="logo">
+
+
+        <div class="logo-icon">
+            🪔
+        </div>
+
+
+        <div>
+
+            <h2>
+                Ganpati
+            </h2>
+
+            <span>
+                Mandal 2026
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <nav>
+
+
+        <a
+            href="#dashboard"
+            class="active">
+
+            <span>
+                📊
+            </span>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="#transactions">
+
+            <span>
+                📋
+            </span>
+
+            Transactions
+
+        </a>
+
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+
+        <div class="ganpati-message">
+
+
+            <div class="small-ganpati">
+                🕉️
+            </div>
+
+
+            <p>
+
+                Ganpati Bappa<br>
+
+                Morya 🙏
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+</aside>
+
+
+<!-- ========================================================
+     MAIN
+======================================================== -->
+
+<main class="main">
+
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+
+    <div>
+
+
+        <h1>
+            Ganpati Mandal Dashboard
+        </h1>
+
+
+        <p>
+            Income & Expense Management
+        </p>
+
+
+    </div>
+
+
+    <button
+        class="refresh-btn"
+        onclick="loadData()">
+
+        🔄 Refresh
+
+    </button>
+
+
+</header>
+
+
+<!-- ERROR -->
+
+<div
+    id="errorBox"
+    class="error-box">
+</div>
+
+
+<!-- LOADING -->
+
+<div
+    id="loading"
+    class="loading">
+
+
+    <div class="spinner">
+    </div>
+
+
+    <p>
+        Loading Google Sheet data...
+    </p>
+
+
+</div>
+
+
+<!-- ========================================================
+     CARDS
+======================================================== -->
+
+<div class="cards">
+
+
+    <!-- TOTAL INCOME -->
+
+    <div class="card income-card">
+
+
+        <div class="card-top">
+
+
+            <div class="card-icon">
+                💰
+            </div>
+
+
+            <span class="card-label">
+                Total Income
+            </span>
+
+
+        </div>
+
+
+        <h2 id="totalIncome">
+            ₹0
+        </h2>
+
+
+        <p>
+            Total amount received
+        </p>
+
+
+    </div>
+
+
+    <!-- TOTAL EXPENSE -->
+
+    <div class="card expense-card">
+
+
+        <div class="card-top">
+
+
+            <div class="card-icon">
+                💸
+            </div>
+
+
+            <span class="card-label">
+                Total Expense
+            </span>
+
+
+        </div>
+
+
+        <h2 id="totalExpense">
+            ₹0
+        </h2>
+
+
+        <p>
+            Total amount spent
+        </p>
+
+
+    </div>
+
+
+    <!-- CURRENT BALANCE -->
+
+    <div class="card balance-card">
+
+
+        <div class="card-top">
+
+
+            <div class="card-icon">
+                🟢
+            </div>
+
+
+            <span class="card-label">
+                Current Balance
+            </span>
+
+
+        </div>
+
+
+        <h2 id="currentBalance">
+            ₹0
+        </h2>
+
+
+        <p>
+            Available balance
+        </p>
+
+
+    </div>
+
+
+    <!-- TRANSACTIONS -->
+
+    <div class="card transaction-card">
+
+
+        <div class="card-top">
+
+
+            <div class="card-icon">
+                📋
+            </div>
+
+
+            <span class="card-label">
+                Transactions
+            </span>
+
+
+        </div>
+
+
+        <h2 id="totalTransactions">
+            0
+        </h2>
+
+
+        <p>
+            Total entries
+        </p>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ========================================================
+     INCOME VS EXPENSE
+======================================================== -->
+
+<div class="chart-row">
+
+
+    <div class="panel">
+
+
+        <div class="panel-header">
+
+
+            <div>
+
+
+                <h3>
+                    Income vs Expense
+                </h3>
+
+
+                <p>
+                    Overall financial summary
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="chart-container">
+
+
+            <canvas
+                id="incomeExpenseChart">
+            </canvas>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ========================================================
+     TRANSACTIONS
+======================================================== -->
+
+<section
+    id="transactions"
+    class="panel">
+
+
+    <div class="panel-header">
+
+
+        <div>
+
+
+            <h3>
+                Transactions
+            </h3>
+
+
+            <p>
+                All income and expense records
+            </p>
+
+
+        </div>
+
+
+        <span
+            id="recordCount"
+            class="record-count">
+
+            0 Records
+
+        </span>
+
+
+    </div>
+
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+
+            <span>
+                🔍
+            </span>
+
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search particular..."
+                oninput="applyFilters()">
+
+
+        </div>
+
+
+        <!-- PAYMENT MODE FILTER -->
+
+        <select
+            id="paymentFilter"
+            onchange="applyFilters()">
+
+
+            <option value="">
+                All Payment Modes
+            </option>
+
+
+        </select>
+
+
+        <!-- TYPE FILTER -->
+
+        <select
+            id="typeFilter"
+            onchange="applyFilters()">
+
+
+            <option value="">
+                All Transactions
+            </option>
+
+
+            <option value="in">
+                Amount IN
+            </option>
+
+
+            <option value="out">
+                Amount OUT
+            </option>
+
+
+        </select>
+
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+
+        <table>
+
+
+            <thead>
+
+
+                <tr>
+
+
+                    <th>
+                        Date
+                    </th>
+
+
+                    <th>
+                        Particular
+                    </th>
+
+
+                    <th>
+                        Payment Mode
+                    </th>
+
+
+                    <th class="amount-column">
+                        Amount IN
+                    </th>
+
+
+                    <th class="amount-column">
+                        Amount Out
+                    </th>
+
+
+                    <th class="amount-column">
+                        Balance
+                    </th>
+
+
+                </tr>
+
+
+            </thead>
+
+
+            <tbody
+                id="tableBody">
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+    <!-- NO DATA -->
+
+    <div
+        id="noData"
+        class="no-data">
+
+
+        <div class="no-data-icon">
+            📋
+        </div>
+
+
+        <h3>
+            No transactions found
+        </h3>
+
+
+        <p>
+            Try changing your search or filters.
+        </p>
+
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<!-- ========================================================
+     JAVASCRIPT
+======================================================== -->
+
+<script>
+
+
+/* ==========================================================
+   GOOGLE APPS SCRIPT URL
+========================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbx8GJSp3B9vtDtAwK5fmRLLtW2rTIljrY0xSwQTQRiSsJVDkGLz4zDtd4GTE9BsmG_e/exec";
+
+
+/* ==========================================================
+   VARIABLES
+========================================================== */
+
+let allData = [];
+
+let filteredData = [];
+
+let incomeExpenseChart = null;
+
+
+/* ==========================================================
+   LOAD DATA
+========================================================== */
+
+async function loadData(){
+
+    showLoading(true);
+
+    hideError();
+
+
+    try{
+
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method:"GET",
+                    cache:"no-cache"
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Google Apps Script returned HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const text =
+            await response.text();
+
+
+        console.log(
+            "API Response:",
+            text
+        );
+
+
+        let data;
+
+
+        try{
+
+            data =
+                JSON.parse(text);
+
+        }
+
+        catch(error){
+
+            throw new Error(
+                "Apps Script is not returning JSON.\n\n" +
+                "Response:\n" +
+                text.substring(0,500)
+            );
+
+        }
+
+
+        if(!Array.isArray(data)){
+
+            throw new Error(
+                "API response is not an array."
+            );
+
+        }
+
+
+        allData =
+            data
+            .filter(
+                row =>
+                    row &&
+                    typeof row === "object"
+            )
+            .map(
+                normalizeRow
+            );
+
+
+        filteredData =
+            [...allData];
+
+
+        updateDashboard();
+
+        populatePaymentModes();
+
+        displayTransactions(
+            filteredData
+        );
+
+        createChart();
+
+
+    }
+
+
+    catch(error){
+
+        console.error(error);
+
+
+        showError(
+            "Unable to load Google Sheet data.\n\n" +
+            "Error: " +
+            error.message +
+            "\n\n" +
+            "Please check your Google Apps Script deployment and permissions."
+        );
+
+    }
+
+
+    finally{
+
+        showLoading(false);
+
+    }
+
+}
+
+
+/* ==========================================================
+   NORMALIZE ROW
+========================================================== */
+
+function normalizeRow(row){
+
+    return{
+
+        date:
+            row["Date"] ?? "",
+
+
+        particular:
+            String(
+                row["Particular"] ?? ""
+            ),
+
+
+        paymentMode:
+            String(
+                row["Payment Mode"] ?? ""
+            ),
+
+
+        amountIn:
+            toNumber(
+                row["Amount IN"]
+            ),
+
+
+        amountOut:
+            toNumber(
+                row["Amount Out"]
+            ),
+
+
+        balance:
+            toNumber(
+                row["Balance"]
+            )
+
+    };
+
+}
+
+
+/* ==========================================================
+   NUMBER CONVERSION
+========================================================== */
+
+function toNumber(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+
+        return 0;
+
+    }
+
+
+    if(
+        typeof value === "number"
+    ){
+
+        return value;
+
+    }
+
+
+    const cleaned =
+        String(value)
+        .replace(/₹/g,"")
+        .replace(/,/g,"")
+        .replace(/\s/g,"")
+        .trim();
+
+
+    const number =
+        parseFloat(cleaned);
+
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+
+}
+
+
+/* ==========================================================
+   CURRENCY
+========================================================== */
+
+function formatCurrency(amount){
+
+    return "₹" +
+
+        Number(amount || 0)
+        .toLocaleString(
+            "en-IN",
+            {
+                maximumFractionDigits:2
+            }
+        );
+
+}
+
+
+/* ==========================================================
+   DASHBOARD
+========================================================== */
+
+function updateDashboard(){
+
+    let totalIncome = 0;
+
+    let totalExpense = 0;
+
+
+    allData.forEach(
+        row => {
+
+            totalIncome +=
+                row.amountIn;
+
+
+            totalExpense +=
+                row.amountOut;
+
+        }
+    );
+
+
+    /*
+       Current balance is taken
+       from the last row of Sheet.
+    */
+
+    let currentBalance = 0;
+
+
+    if(allData.length > 0){
+
+        currentBalance =
+            allData[
+                allData.length - 1
+            ].balance;
+
+    }
+
+
+    document.getElementById(
+        "totalIncome"
+    ).textContent =
+        formatCurrency(
+            totalIncome
+        );
+
+
+    document.getElementById(
+        "totalExpense"
+    ).textContent =
+        formatCurrency(
+            totalExpense
+        );
+
+
+    document.getElementById(
+        "currentBalance"
+    ).textContent =
+        formatCurrency(
+            currentBalance
+        );
+
+
+    document.getElementById(
+        "totalTransactions"
+    ).textContent =
+        allData.length;
+
+}
+
+
+/* ==========================================================
+   PAYMENT MODE FILTER
+========================================================== */
+
+function populatePaymentModes(){
+
+    const select =
+        document.getElementById(
+            "paymentFilter"
+        );
+
+
+    const modes =
+        [
+            ...new Set(
+
+                allData
+
+                    .map(
+                        row =>
+                            row.paymentMode
+                    )
+
+                    .filter(Boolean)
+
+            )
+        ];
+
+
+    select.innerHTML = `
+
+        <option value="">
+            All Payment Modes
+        </option>
+
+    `;
+
+
+    modes.forEach(
+        mode => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                mode;
+
+
+            option.textContent =
+                mode;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   FILTER
+========================================================== */
+
+function applyFilters(){
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const paymentMode =
+        document.getElementById(
+            "paymentFilter"
+        ).value;
+
+
+    const type =
+        document.getElementById(
+            "typeFilter"
+        ).value;
+
+
+    filteredData =
+        allData.filter(
+            row => {
+
+
+                const matchesSearch =
+                    row.particular
+                    .toLowerCase()
+                    .includes(
+                        search
+                    );
+
+
+                const matchesPayment =
+                    paymentMode === "" ||
+                    row.paymentMode ===
+                    paymentMode;
+
+
+                let matchesType =
+                    true;
+
+
+                if(type === "in"){
+
+                    matchesType =
+                        row.amountIn > 0;
+
+                }
+
+
+                if(type === "out"){
+
+                    matchesType =
+                        row.amountOut > 0;
+
+                }
+
+
+                return(
+                    matchesSearch &&
+                    matchesPayment &&
+                    matchesType
+                );
+
+            }
+        );
+
+
+    displayTransactions(
+        filteredData
+    );
+
+}
+
+
+/* ==========================================================
+   DISPLAY TRANSACTIONS
+========================================================== */
+
+function displayTransactions(data){
+
+    const tbody =
+        document.getElementById(
+            "tableBody"
+        );
+
+
+    const noData =
+        document.getElementById(
+            "noData"
+        );
+
+
+    const recordCount =
+        document.getElementById(
+            "recordCount"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    recordCount.textContent =
+        data.length +
+
+        (
+            data.length === 1
+                ? " Record"
+                : " Records"
+        );
+
+
+    if(data.length === 0){
+
+        noData.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    noData.style.display =
+        "none";
+
+
+    data.forEach(
+        row => {
+
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const amountIn =
+                row.amountIn > 0
+
+                ? `
+                    <span class="income-value">
+                        + ${formatCurrency(row.amountIn)}
+                    </span>
+                  `
+
+                : "-";
+
+
+            const amountOut =
+                row.amountOut > 0
+
+                ? `
+                    <span class="expense-value">
+                        - ${formatCurrency(row.amountOut)}
+                    </span>
+                  `
+
+                : "-";
+
+
+            tr.innerHTML = `
+
+                <td>
+                    ${formatDate(row.date)}
+                </td>
+
+
+                <td>
+
+                    <strong>
+                        ${escapeHTML(
+                            row.particular
+                        )}
+                    </strong>
+
+                </td>
+
+
+                <td>
+
+                    <span class="mode-badge">
+
+                        ${escapeHTML(
+                            row.paymentMode ||
+                            "-"
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td class="amount-column">
+
+                    ${amountIn}
+
+                </td>
+
+
+                <td class="amount-column">
+
+                    ${amountOut}
+
+                </td>
+
+
+                <td class="amount-column">
+
+                    <span class="balance-value">
+
+                        ${formatCurrency(
+                            row.balance
+                        )}
+
+                    </span>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   DATE FORMAT
+========================================================== */
+
+function formatDate(value){
+
+    if(!value){
+
+        return "-";
+
+    }
+
+
+    /*
+       Handle Google Apps Script
+       ISO date format safely.
+    */
+
+    if(
+        typeof value === "string"
+    ){
+
+        const match =
+            value.match(
+                /^(\d{4})-(\d{2})-(\d{2})/
+            );
+
+
+        if(match){
+
+            return(
+                match[3] +
+                "/" +
+                match[2] +
+                "/" +
+                match[1]
+            );
+
+        }
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return String(value);
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric"
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   CHART
+========================================================== */
+
+function createChart(){
+
+    const canvas =
+        document.getElementById(
+            "incomeExpenseChart"
+        );
+
+
+    let totalIncome = 0;
+
+    let totalExpense = 0;
+
+
+    allData.forEach(
+        row => {
+
+            totalIncome +=
+                row.amountIn;
+
+
+            totalExpense +=
+                row.amountOut;
+
+        }
+    );
+
+
+    if(incomeExpenseChart){
+
+        incomeExpenseChart.destroy();
+
+    }
+
+
+    incomeExpenseChart =
+        new Chart(
+            canvas,
+            {
+
+                type:"doughnut",
+
+
+                data:{
+
+                    labels:[
+                        "Income",
+                        "Expense"
+                    ],
+
+
+                    datasets:[{
+
+                        data:[
+                            totalIncome,
+                            totalExpense
+                        ],
+
+
+                        backgroundColor:[
+                            "#16a34a",
+                            "#dc2626"
+                        ],
+
+
+                        borderWidth:0
+
+                    }]
+
+                },
+
+
+                options:{
+
+                    responsive:true,
+
+                    maintainAspectRatio:false,
+
+                    cutout:"68%",
+
+
+                    plugins:{
+
+                        legend:{
+                            position:"bottom"
+                        },
+
+
+                        tooltip:{
+
+                            callbacks:{
+
+                                label:function(
+                                    context
+                                ){
+
+                                    return(
+                                        " " +
+                                        context.label +
+                                        ": " +
+                                        formatCurrency(
+                                            context.raw
+                                        )
+                                    );
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+/* ==========================================================
+   ESCAPE HTML
+========================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+function showLoading(show){
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        show
+            ? "flex"
+            : "none";
+
+}
+
+
+/* ==========================================================
+   ERROR
+========================================================== */
+
+function showError(message){
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    box.textContent =
+        message;
+
+
+    box.style.display =
+        "block";
+
+}
+
+
+function hideError(){
+
+    document.getElementById(
+        "errorBox"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadData();
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>
