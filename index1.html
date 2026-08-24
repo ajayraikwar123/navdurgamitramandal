@@ -1,0 +1,3280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Navdurga Mitra Mandal Accounts 2026</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+/* ==========================================================
+   VARIABLES
+========================================================== */
+
+:root{
+
+    --primary:#e11d48;
+    --primary-dark:#be123c;
+
+    --income:#16a34a;
+    --expense:#dc2626;
+    --balance:#2563eb;
+
+    --dark:#111827;
+    --text:#374151;
+    --muted:#6b7280;
+
+    --border:#e5e7eb;
+
+    --bg:#f7f8fc;
+
+    --white:#ffffff;
+
+}
+
+
+/* ==========================================================
+   BODY
+========================================================== */
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+}
+
+
+/* ==========================================================
+   APP
+========================================================== */
+
+.app{
+
+    min-height:100vh;
+
+    display:flex;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+
+    width:250px;
+
+    position:fixed;
+
+    left:0;
+    top:0;
+    bottom:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            #881337,
+            #be123c
+        );
+
+    color:white;
+
+    padding:25px 18px;
+
+    z-index:100;
+
+}
+
+
+/* ==========================================================
+   LOGO
+========================================================== */
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:
+        5px
+        8px
+        30px;
+
+}
+
+
+.logo-icon{
+
+    width:48px;
+    height:48px;
+
+    min-width:48px;
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:25px;
+
+}
+
+
+.logo h2{
+
+    font-size:20px;
+
+}
+
+
+.logo span{
+
+    font-size:12px;
+
+    opacity:.75;
+
+}
+
+
+/* ==========================================================
+   NAVIGATION
+========================================================== */
+
+nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:7px;
+
+}
+
+
+nav a{
+
+    text-decoration:none;
+
+    color:
+        rgba(255,255,255,.75);
+
+    padding:
+        13px
+        14px;
+
+    border-radius:10px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-size:14px;
+
+    transition:.2s;
+
+}
+
+
+nav a:hover,
+nav a.active{
+
+    background:
+        rgba(255,255,255,.15);
+
+    color:white;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR BOTTOM
+========================================================== */
+
+.sidebar-bottom{
+
+    position:absolute;
+
+    bottom:25px;
+
+    left:18px;
+    right:18px;
+
+}
+
+
+.ganpati-message{
+
+    background:
+        rgba(255,255,255,.1);
+
+    padding:18px;
+
+    border-radius:14px;
+
+    text-align:center;
+
+}
+
+
+.small-ganpati{
+
+    font-size:28px;
+
+    margin-bottom:8px;
+
+}
+
+
+.ganpati-message p{
+
+    font-size:12px;
+
+    line-height:1.5;
+
+    opacity:.85;
+
+}
+
+
+/* ==========================================================
+   MAIN
+========================================================== */
+
+.main{
+
+    margin-left:250px;
+
+    width:
+        calc(100% - 250px);
+
+    padding:28px;
+
+    min-width:0;
+
+}
+
+
+/* ==========================================================
+   TOPBAR
+========================================================== */
+
+.topbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    margin-bottom:28px;
+
+}
+
+
+.topbar h1{
+
+    color:var(--dark);
+
+    font-size:25px;
+
+    line-height:1.3;
+
+}
+
+
+.topbar p{
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    margin-top:5px;
+
+}
+
+
+.refresh-btn{
+
+    border:none;
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:
+        11px
+        17px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    white-space:nowrap;
+
+    transition:.2s;
+
+}
+
+
+.refresh-btn:hover{
+
+    background:var(--primary-dark);
+
+}
+
+
+/* ==========================================================
+   ERROR
+========================================================== */
+
+.error-box{
+
+    display:none;
+
+    background:#fee2e2;
+
+    border:1px solid #fecaca;
+
+    color:#991b1b;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+}
+
+
+/* ==========================================================
+   CARDS
+========================================================== */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:18px;
+
+    margin-bottom:20px;
+
+}
+
+
+.card{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,.03);
+
+    min-width:0;
+
+}
+
+
+.card-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+.card-icon{
+
+    width:40px;
+    height:40px;
+
+    min-width:40px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:10px;
+
+    font-size:20px;
+
+}
+
+
+.income-card .card-icon{
+
+    background:#dcfce7;
+
+}
+
+
+.expense-card .card-icon{
+
+    background:#fee2e2;
+
+}
+
+
+.balance-card .card-icon{
+
+    background:#dbeafe;
+
+}
+
+
+.transaction-card .card-icon{
+
+    background:#fef3c7;
+
+}
+
+
+.card-label{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+
+.card h2{
+
+    margin-top:15px;
+
+    color:var(--dark);
+
+    font-size:25px;
+
+    word-break:break-word;
+
+}
+
+
+.income-card h2{
+
+    color:var(--income);
+
+}
+
+
+.expense-card h2{
+
+    color:var(--expense);
+
+}
+
+
+.balance-card h2{
+
+    color:var(--balance);
+
+}
+
+
+.card p{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-top:6px;
+
+}
+
+
+/* ==========================================================
+   CHART + BANNER ROW
+========================================================== */
+
+.chart-banner-row{
+
+    display:grid;
+
+    grid-template-columns:
+        1.15fr
+        1fr;
+
+    gap:20px;
+
+    margin-bottom:20px;
+
+}
+
+
+/* ==========================================================
+   PANEL
+========================================================== */
+
+.panel{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,.03);
+
+    min-width:0;
+
+}
+
+
+/* ==========================================================
+   PANEL HEADER
+========================================================== */
+
+.panel-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:18px;
+
+}
+
+
+.panel-header h3{
+
+    color:var(--dark);
+
+    font-size:16px;
+
+}
+
+
+.panel-header p{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-top:4px;
+
+}
+
+
+/* ==========================================================
+   CHART PANEL
+========================================================== */
+
+.chart-panel{
+
+    min-height:430px;
+
+}
+
+
+.chart-container{
+
+    height:330px;
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+/* ==========================================================
+   BANNER PANEL
+========================================================== */
+
+.banner-panel{
+
+    position:relative;
+
+    min-height:430px;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    background:#881337;
+
+}
+
+
+/*
+   IMPORTANT:
+   NO BLACK SHADOW / DARK OVERLAY
+*/
+
+.banner-panel::after{
+
+    display:none;
+
+}
+
+
+.banner-panel img{
+
+    width:100%;
+
+    height:430px;
+
+    object-fit:cover;
+
+    object-position:center;
+
+    display:block;
+
+    filter:none;
+
+    opacity:1;
+
+}
+
+
+/* ==========================================================
+   BANNER TEXT
+========================================================== */
+
+.banner-overlay{
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+    z-index:2;
+
+    color:white;
+
+    padding:30px;
+
+    text-align:center;
+
+}
+
+
+/* ==========================================================
+   FILTERS
+========================================================== */
+
+.filters{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:18px;
+
+}
+
+
+.search-box{
+
+    flex:1;
+
+    position:relative;
+
+    min-width:0;
+
+}
+
+
+.search-box span{
+
+    position:absolute;
+
+    left:12px;
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+}
+
+
+.search-box input{
+
+    width:100%;
+
+    padding:
+        11px
+        12px
+        11px
+        38px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:9px;
+
+    outline:none;
+
+    font-size:13px;
+
+}
+
+
+.search-box input:focus{
+
+    border-color:
+        var(--primary);
+
+}
+
+
+.filters select{
+
+    padding:
+        0
+        12px;
+
+    height:42px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:9px;
+
+    background:white;
+
+    color:var(--text);
+
+    outline:none;
+
+}
+
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.table-wrapper{
+
+    overflow-x:auto;
+
+    -webkit-overflow-scrolling:touch;
+
+    border-radius:8px;
+
+}
+
+
+table{
+
+    width:100%;
+
+    min-width:850px;
+
+    border-collapse:collapse;
+
+}
+
+
+thead{
+
+    background:#f9fafb;
+
+}
+
+
+th{
+
+    padding:13px;
+
+    text-align:left;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+}
+
+
+td{
+
+    padding:
+        14px
+        13px;
+
+    border-top:
+        1px solid
+        #f0f0f0;
+
+    font-size:13px;
+
+    white-space:nowrap;
+
+}
+
+
+tr:hover td{
+
+    background:#fafafa;
+
+}
+
+
+.amount-column{
+
+    text-align:right;
+
+}
+
+
+.income-value{
+
+    color:var(--income);
+
+    font-weight:600;
+
+}
+
+
+.expense-value{
+
+    color:var(--expense);
+
+    font-weight:600;
+
+}
+
+
+.balance-value{
+
+    color:var(--balance);
+
+    font-weight:600;
+
+}
+
+
+.mode-badge{
+
+    display:inline-block;
+
+    padding:
+        5px
+        9px;
+
+    border-radius:20px;
+
+    background:#f3f4f6;
+
+    font-size:11px;
+
+}
+
+
+.record-count{
+
+    background:#f3f4f6;
+
+    padding:
+        6px
+        10px;
+
+    border-radius:20px;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    white-space:nowrap;
+
+}
+
+
+/* ==========================================================
+   NO DATA
+========================================================== */
+
+.no-data{
+
+    text-align:center;
+
+    padding:45px;
+
+    display:none;
+
+}
+
+
+.no-data-icon{
+
+    font-size:40px;
+
+}
+
+
+.no-data h3{
+
+    margin-top:10px;
+
+    color:var(--dark);
+
+}
+
+
+.no-data p{
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.loading{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(255,255,255,.96);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:1000;
+
+}
+
+
+.spinner{
+
+    width:42px;
+    height:42px;
+
+    border:
+        4px solid
+        #e5e7eb;
+
+    border-top-color:
+        var(--primary);
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+
+}
+
+
+.loading p{
+
+    margin-top:12px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+/* ==========================================================
+   TABLET - 1100px
+========================================================== */
+
+@media(max-width:1100px){
+
+    .cards{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+
+    .chart-banner-row{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .banner-panel{
+
+        min-height:400px;
+
+    }
+
+
+    .banner-panel img{
+
+        height:400px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   TABLET / MOBILE - 800px
+========================================================== */
+
+@media(max-width:800px){
+
+    .sidebar{
+
+        width:70px;
+
+        padding:
+            20px
+            10px;
+
+    }
+
+
+    .logo{
+
+        justify-content:center;
+
+        padding:
+            5px
+            0
+            30px;
+
+    }
+
+
+    .logo > div:last-child{
+
+        display:none;
+
+    }
+
+
+    .logo-icon{
+
+        width:45px;
+        height:45px;
+
+        min-width:45px;
+
+    }
+
+
+    nav a{
+
+        justify-content:center;
+
+        padding:
+            13px
+            8px;
+
+        font-size:0;
+
+    }
+
+
+    nav a span{
+
+        font-size:18px;
+
+    }
+
+
+    .sidebar-bottom{
+
+        display:none;
+
+    }
+
+
+    .main{
+
+        margin-left:70px;
+
+        width:
+            calc(100% - 70px);
+
+        padding:20px;
+
+    }
+
+
+    .topbar{
+
+        align-items:flex-start;
+
+    }
+
+
+    .topbar h1{
+
+        font-size:21px;
+
+    }
+
+
+    .topbar p{
+
+        font-size:13px;
+
+    }
+
+
+    .chart-panel{
+
+        min-height:390px;
+
+    }
+
+
+    .chart-container{
+
+        height:290px;
+
+    }
+
+
+    .banner-panel{
+
+        min-height:360px;
+
+    }
+
+
+    .banner-panel img{
+
+        height:360px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE - 600px
+========================================================== */
+
+@media(max-width:600px){
+
+    .main{
+
+        padding:15px;
+
+    }
+
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        gap:12px;
+
+        margin-bottom:18px;
+
+    }
+
+
+    .topbar h1{
+
+        font-size:19px;
+
+        line-height:1.35;
+
+    }
+
+
+    .topbar p{
+
+        font-size:12px;
+
+    }
+
+
+    .refresh-btn{
+
+        width:100%;
+
+        padding:12px;
+
+    }
+
+
+    /* CARDS */
+
+    .cards{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:10px;
+
+    }
+
+
+    .card{
+
+        padding:15px;
+
+        border-radius:12px;
+
+    }
+
+
+    .card-top{
+
+        gap:7px;
+
+    }
+
+
+    .card-icon{
+
+        width:34px;
+        height:34px;
+
+        min-width:34px;
+
+        font-size:17px;
+
+    }
+
+
+    .card-label{
+
+        font-size:11px;
+
+    }
+
+
+    .card h2{
+
+        font-size:19px;
+
+        margin-top:11px;
+
+    }
+
+
+    .card p{
+
+        font-size:10px;
+
+    }
+
+
+    /* CHART */
+
+    .chart-banner-row{
+
+        gap:15px;
+
+        margin-bottom:15px;
+
+    }
+
+
+    .panel{
+
+        padding:15px;
+
+        border-radius:12px;
+
+    }
+
+
+    .chart-panel{
+
+        min-height:350px;
+
+    }
+
+
+    .chart-container{
+
+        height:250px;
+
+    }
+
+
+    .panel-header{
+
+        margin-bottom:12px;
+
+    }
+
+
+    .panel-header h3{
+
+        font-size:15px;
+
+    }
+
+
+    .panel-header p{
+
+        font-size:11px;
+
+    }
+
+
+    /* BANNER */
+
+    .banner-panel{
+
+        min-height:300px;
+
+        border-radius:12px;
+
+    }
+
+
+    .banner-panel img{
+
+        height:300px;
+
+        min-height:300px;
+
+        object-fit:cover;
+
+    }
+
+
+    /* FILTER */
+
+    .filters{
+
+        flex-direction:column;
+
+        gap:9px;
+
+    }
+
+
+    .search-box input{
+
+        height:42px;
+
+    }
+
+
+    .filters select{
+
+        width:100%;
+
+        height:42px;
+
+    }
+
+
+    /* TABLE */
+
+    .table-wrapper{
+
+        margin-left:-5px;
+
+        margin-right:-5px;
+
+    }
+
+
+    table{
+
+        min-width:760px;
+
+    }
+
+
+    th{
+
+        padding:11px 10px;
+
+        font-size:10px;
+
+    }
+
+
+    td{
+
+        padding:12px 10px;
+
+        font-size:12px;
+
+    }
+
+
+    .record-count{
+
+        font-size:10px;
+
+        padding:5px 8px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE - 400px
+========================================================== */
+
+@media(max-width:400px){
+
+    .sidebar{
+
+        width:58px;
+
+        padding:
+            15px
+            7px;
+
+    }
+
+
+    .main{
+
+        margin-left:58px;
+
+        width:
+            calc(100% - 58px);
+
+        padding:10px;
+
+    }
+
+
+    .logo{
+
+        padding-bottom:22px;
+
+    }
+
+
+    .logo-icon{
+
+        width:40px;
+        height:40px;
+
+        min-width:40px;
+
+        font-size:20px;
+
+    }
+
+
+    nav a{
+
+        padding:11px 5px;
+
+    }
+
+
+    nav a span{
+
+        font-size:17px;
+
+    }
+
+
+    .topbar h1{
+
+        font-size:17px;
+
+    }
+
+
+    .cards{
+
+        gap:8px;
+
+    }
+
+
+    .card{
+
+        padding:12px;
+
+    }
+
+
+    .card-icon{
+
+        width:30px;
+        height:30px;
+
+        min-width:30px;
+
+        font-size:15px;
+
+    }
+
+
+    .card-label{
+
+        font-size:10px;
+
+    }
+
+
+    .card h2{
+
+        font-size:16px;
+
+    }
+
+
+    .card p{
+
+        font-size:9px;
+
+    }
+
+
+    .chart-panel{
+
+        min-height:320px;
+
+    }
+
+
+    .chart-container{
+
+        height:220px;
+
+    }
+
+
+    .banner-panel{
+
+        min-height:260px;
+
+    }
+
+
+    .banner-panel img{
+
+        height:260px;
+
+        min-height:260px;
+
+    }
+
+
+    .panel{
+
+        padding:12px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- ========================================================
+     SIDEBAR
+======================================================== -->
+
+<aside class="sidebar">
+
+
+    <div class="logo">
+
+        <div class="logo-icon">
+
+            🪔
+
+        </div>
+
+
+        <div>
+
+            <h2>Ganpati</h2>
+
+            <span>Mandal 2026</span>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a
+            href="#dashboard"
+            class="active">
+
+            <span>📊</span>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="#transactions">
+
+            <span>📋</span>
+
+            Transactions
+
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="ganpati-message">
+
+            <div class="small-ganpati">
+
+                🕉️
+
+            </div>
+
+
+            <p>
+
+                Ganpati Bappa<br>
+
+                Morya 🙏
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+</aside>
+
+
+<!-- ========================================================
+     MAIN
+======================================================== -->
+
+<main class="main" id="dashboard">
+
+
+<!-- ========================================================
+     TOPBAR
+======================================================== -->
+
+<header class="topbar">
+
+
+    <div>
+
+        <h1>
+
+            Navdurga Mitra Mandal Accounts 2026
+
+        </h1>
+
+
+        <p>
+
+            Income & Expense Management
+
+        </p>
+
+    </div>
+
+
+    <button
+        class="refresh-btn"
+        onclick="loadData()">
+
+        🔄 Refresh
+
+    </button>
+
+
+</header>
+
+
+<!-- ERROR -->
+
+<div
+    id="errorBox"
+    class="error-box">
+</div>
+
+
+<!-- ========================================================
+     LOADING
+======================================================== -->
+
+<div
+    id="loading"
+    class="loading">
+
+    <div class="spinner"></div>
+
+    <p>
+
+        Loading Google Sheet data...
+
+    </p>
+
+</div>
+
+
+<!-- ========================================================
+     DASHBOARD CARDS
+======================================================== -->
+
+<div class="cards">
+
+
+    <!-- TOTAL INCOME -->
+
+    <div class="card income-card">
+
+        <div class="card-top">
+
+            <div class="card-icon">
+
+                💰
+
+            </div>
+
+
+            <span class="card-label">
+
+                Total Income
+
+            </span>
+
+        </div>
+
+
+        <h2 id="totalIncome">
+
+            ₹0
+
+        </h2>
+
+
+        <p>
+
+            Total amount received
+
+        </p>
+
+    </div>
+
+
+    <!-- TOTAL EXPENSE -->
+
+    <div class="card expense-card">
+
+        <div class="card-top">
+
+            <div class="card-icon">
+
+                💸
+
+            </div>
+
+
+            <span class="card-label">
+
+                Total Expense
+
+            </span>
+
+        </div>
+
+
+        <h2 id="totalExpense">
+
+            ₹0
+
+        </h2>
+
+
+        <p>
+
+            Total amount spent
+
+        </p>
+
+    </div>
+
+
+    <!-- CURRENT BALANCE -->
+
+    <div class="card balance-card">
+
+        <div class="card-top">
+
+            <div class="card-icon">
+
+                🟢
+
+            </div>
+
+
+            <span class="card-label">
+
+                Current Balance
+
+            </span>
+
+        </div>
+
+
+        <h2 id="currentBalance">
+
+            ₹0
+
+        </h2>
+
+
+        <p>
+
+            Available balance
+
+        </p>
+
+    </div>
+
+
+    <!-- TRANSACTIONS -->
+
+    <div class="card transaction-card">
+
+        <div class="card-top">
+
+            <div class="card-icon">
+
+                📋
+
+            </div>
+
+
+            <span class="card-label">
+
+                Transactions
+
+            </span>
+
+        </div>
+
+
+        <h2 id="totalTransactions">
+
+            0
+
+        </h2>
+
+
+        <p>
+
+            Total entries
+
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<!-- ========================================================
+     CHART + BANNER
+======================================================== -->
+
+<div class="chart-banner-row">
+
+
+    <!-- CHART -->
+
+    <div class="panel chart-panel">
+
+
+        <div class="panel-header">
+
+            <div>
+
+                <h3>
+
+                    Income vs Expense
+
+                </h3>
+
+
+                <p>
+
+                    Overall financial summary
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+            <canvas
+                id="incomeExpenseChart">
+            </canvas>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- BANNER -->
+
+    <div class="banner-panel">
+
+
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5kTgOcGg3sWOhFQEhB2Kb6mZEJiUAx_4rhtkxhM2NanSllz009MWIVS8&s=10"
+            alt="Navdurga Mitra Mandal Banner">
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ========================================================
+     TRANSACTIONS
+======================================================== -->
+
+<section
+    id="transactions"
+    class="panel">
+
+
+    <div class="panel-header">
+
+
+        <div>
+
+            <h3>
+
+                Transactions
+
+            </h3>
+
+
+            <p>
+
+                All income and expense records
+
+            </p>
+
+        </div>
+
+
+        <span
+            id="recordCount"
+            class="record-count">
+
+            0 Records
+
+        </span>
+
+
+    </div>
+
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+
+            <span>
+
+                🔍
+
+            </span>
+
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search particular..."
+                oninput="applyFilters">
+
+
+        </div>
+
+
+        <!-- PAYMENT MODE -->
+
+        <select
+            id="paymentFilter"
+            onchange="applyFilters()">
+
+
+            <option value="">
+
+                All Payment Modes
+
+            </option>
+
+
+        </select>
+
+
+        <!-- TRANSACTION TYPE -->
+
+        <select
+            id="typeFilter"
+            onchange="applyFilters()">
+
+
+            <option value="">
+
+                All Transactions
+
+            </option>
+
+
+            <option value="in">
+
+                Amount IN
+
+            </option>
+
+
+            <option value="out">
+
+                Amount OUT
+
+            </option>
+
+
+        </select>
+
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Particular
+                    </th>
+
+                    <th>
+                        Payment Mode
+                    </th>
+
+                    <th class="amount-column">
+                        Amount IN
+                    </th>
+
+                    <th class="amount-column">
+                        Amount Out
+                    </th>
+
+                    <th class="amount-column">
+                        Balance
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="tableBody">
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+    <!-- NO DATA -->
+
+    <div
+        id="noData"
+        class="no-data">
+
+
+        <div class="no-data-icon">
+
+            📋
+
+        </div>
+
+
+        <h3>
+
+            No transactions found
+
+        </h3>
+
+
+        <p>
+
+            Try changing your search or filters.
+
+        </p>
+
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+
+</div>
+
+
+<!-- ========================================================
+     JAVASCRIPT
+======================================================== -->
+
+<script>
+
+
+/* ==========================================================
+   GOOGLE APPS SCRIPT API URL
+========================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbx8GJSp3B9vtDtAwK5fmRLLtW2rTIljrY0xSwQTQRiSsJVDkGLz4zDtd4GTE9BsmG_e/exec";
+
+
+/* ==========================================================
+   VARIABLES
+========================================================== */
+
+let allData = [];
+
+let filteredData = [];
+
+let incomeExpenseChart = null;
+
+
+/* ==========================================================
+   LOAD GOOGLE SHEET DATA
+========================================================== */
+
+async function loadData(){
+
+    showLoading(true);
+
+    hideError();
+
+    try{
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method:"GET",
+                    cache:"no-cache"
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Google Apps Script returned HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const text =
+            await response.text();
+
+
+        console.log(
+            "Google Sheet API Response:",
+            text
+        );
+
+
+        let data;
+
+
+        try{
+
+            data =
+                JSON.parse(text);
+
+        }
+
+        catch(error){
+
+            throw new Error(
+                "Apps Script is not returning JSON.\n\n" +
+                "Response:\n" +
+                text.substring(0,500)
+            );
+
+        }
+
+
+        if(!Array.isArray(data)){
+
+            throw new Error(
+                "API response is not an array."
+            );
+
+        }
+
+
+        allData =
+            data
+
+            .filter(
+                row =>
+                    row &&
+                    typeof row === "object"
+            )
+
+            .map(
+                normalizeRow
+            );
+
+
+        filteredData =
+            [...allData];
+
+
+        updateDashboard();
+
+        populatePaymentModes();
+
+        displayTransactions(
+            filteredData
+        );
+
+        createChart();
+
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+
+        showError(
+
+            "Unable to load Google Sheet data.<br><br>" +
+
+            "<strong>Error:</strong> " +
+
+            escapeHTML(
+                error.message
+            ) +
+
+            "<br><br>" +
+
+            "Please check your Google Apps Script deployment and permissions."
+
+        );
+
+    }
+
+
+    finally{
+
+        showLoading(false);
+
+    }
+
+}
+
+
+/* ==========================================================
+   NORMALIZE ROW
+========================================================== */
+
+function normalizeRow(row){
+
+    return{
+
+        date:
+            row["Date"] ?? "",
+
+        particular:
+            String(
+                row["Particular"] ?? ""
+            ),
+
+        paymentMode:
+            String(
+                row["Payment Mode"] ?? ""
+            ),
+
+        amountIn:
+            toNumber(
+                row["Amount IN"]
+            ),
+
+        amountOut:
+            toNumber(
+                row["Amount Out"]
+            ),
+
+        balance:
+            toNumber(
+                row["Balance"]
+            )
+
+    };
+
+}
+
+
+/* ==========================================================
+   CONVERT TO NUMBER
+========================================================== */
+
+function toNumber(value){
+
+    if(
+
+        value === null ||
+
+        value === undefined ||
+
+        value === ""
+
+    ){
+
+        return 0;
+
+    }
+
+
+    if(
+        typeof value === "number"
+    ){
+
+        return value;
+
+    }
+
+
+    const cleaned =
+
+        String(value)
+
+        .replace(/₹/g,"")
+
+        .replace(/,/g,"")
+
+        .replace(/\s/g,"")
+
+        .trim();
+
+
+    const number =
+        parseFloat(cleaned);
+
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+
+}
+
+
+/* ==========================================================
+   CURRENCY
+========================================================== */
+
+function formatCurrency(amount){
+
+    return "₹" +
+
+        Number(amount || 0)
+
+        .toLocaleString(
+            "en-IN",
+            {
+                maximumFractionDigits:2
+            }
+        );
+
+}
+
+
+/* ==========================================================
+   UPDATE DASHBOARD
+========================================================== */
+
+function updateDashboard(){
+
+    let totalIncome = 0;
+
+    let totalExpense = 0;
+
+
+    allData.forEach(row => {
+
+        totalIncome +=
+            row.amountIn;
+
+        totalExpense +=
+            row.amountOut;
+
+    });
+
+
+    let currentBalance = 0;
+
+
+    if(allData.length > 0){
+
+        currentBalance =
+            allData[
+                allData.length - 1
+            ].balance;
+
+    }
+
+
+    document.getElementById(
+        "totalIncome"
+    ).textContent =
+        formatCurrency(
+            totalIncome
+        );
+
+
+    document.getElementById(
+        "totalExpense"
+    ).textContent =
+        formatCurrency(
+            totalExpense
+        );
+
+
+    document.getElementById(
+        "currentBalance"
+    ).textContent =
+        formatCurrency(
+            currentBalance
+        );
+
+
+    document.getElementById(
+        "totalTransactions"
+    ).textContent =
+        allData.length;
+
+}
+
+
+/* ==========================================================
+   PAYMENT MODES
+========================================================== */
+
+function populatePaymentModes(){
+
+    const select =
+        document.getElementById(
+            "paymentFilter"
+        );
+
+
+    const modes =
+
+        [
+
+            ...new Set(
+
+                allData
+
+                .map(
+                    row =>
+                        row.paymentMode
+                )
+
+                .filter(Boolean)
+
+            )
+
+        ];
+
+
+    select.innerHTML = `
+
+        <option value="">
+
+            All Payment Modes
+
+        </option>
+
+    `;
+
+
+    modes.forEach(
+        mode => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                mode;
+
+
+            option.textContent =
+                mode;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   APPLY FILTERS
+========================================================== */
+
+function applyFilters(){
+
+    const search =
+
+        document.getElementById(
+            "searchInput"
+        )
+
+        .value
+
+        .toLowerCase()
+
+        .trim();
+
+
+    const paymentMode =
+
+        document.getElementById(
+            "paymentFilter"
+        ).value;
+
+
+    const type =
+
+        document.getElementById(
+            "typeFilter"
+        ).value;
+
+
+    filteredData =
+
+        allData.filter(
+            row => {
+
+                const matchesSearch =
+
+                    row.particular
+
+                    .toLowerCase()
+
+                    .includes(
+                        search
+                    );
+
+
+                const matchesPayment =
+
+                    paymentMode === "" ||
+
+                    row.paymentMode ===
+                    paymentMode;
+
+
+                let matchesType = true;
+
+
+                if(type === "in"){
+
+                    matchesType =
+                        row.amountIn > 0;
+
+                }
+
+
+                if(type === "out"){
+
+                    matchesType =
+                        row.amountOut > 0;
+
+                }
+
+
+                return (
+
+                    matchesSearch &&
+
+                    matchesPayment &&
+
+                    matchesType
+
+                );
+
+            }
+        );
+
+
+    displayTransactions(
+        filteredData
+    );
+
+}
+
+
+/* ==========================================================
+   DISPLAY TRANSACTIONS
+========================================================== */
+
+function displayTransactions(data){
+
+    const tbody =
+        document.getElementById(
+            "tableBody"
+        );
+
+
+    const noData =
+        document.getElementById(
+            "noData"
+        );
+
+
+    const recordCount =
+        document.getElementById(
+            "recordCount"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    recordCount.textContent =
+
+        data.length +
+
+        (
+
+            data.length === 1
+
+            ? " Record"
+
+            : " Records"
+
+        );
+
+
+    if(data.length === 0){
+
+        noData.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    noData.style.display =
+        "none";
+
+
+    data.forEach(row => {
+
+        const tr =
+            document.createElement(
+                "tr"
+            );
+
+
+        const amountIn =
+
+            row.amountIn > 0
+
+            ?
+
+            `
+
+            <span class="income-value">
+
+                + ${formatCurrency(
+                    row.amountIn
+                )}
+
+            </span>
+
+            `
+
+            :
+
+            "-";
+
+
+        const amountOut =
+
+            row.amountOut > 0
+
+            ?
+
+            `
+
+            <span class="expense-value">
+
+                - ${formatCurrency(
+                    row.amountOut
+                )}
+
+            </span>
+
+            `
+
+            :
+
+            "-";
+
+
+        tr.innerHTML = `
+
+            <td>
+
+                ${formatDate(
+                    row.date
+                )}
+
+            </td>
+
+
+            <td>
+
+                <strong>
+
+                    ${escapeHTML(
+                        row.particular
+                    )}
+
+                </strong>
+
+            </td>
+
+
+            <td>
+
+                <span class="mode-badge">
+
+                    ${escapeHTML(
+                        row.paymentMode || "-"
+                    )}
+
+                </span>
+
+            </td>
+
+
+            <td class="amount-column">
+
+                ${amountIn}
+
+            </td>
+
+
+            <td class="amount-column">
+
+                ${amountOut}
+
+            </td>
+
+
+            <td class="amount-column">
+
+                <span class="balance-value">
+
+                    ${formatCurrency(
+                        row.balance
+                    )}
+
+                </span>
+
+            </td>
+
+        `;
+
+
+        tbody.appendChild(
+            tr
+        );
+
+    });
+
+}
+
+
+/* ==========================================================
+   DATE FORMAT
+========================================================== */
+
+function formatDate(value){
+
+    if(!value){
+
+        return "-";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if(
+
+        Number.isNaN(
+            date.getTime()
+        )
+
+    ){
+
+        return String(value);
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric"
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   CREATE CHART
+========================================================== */
+
+function createChart(){
+
+    const canvas =
+        document.getElementById(
+            "incomeExpenseChart"
+        );
+
+
+    let totalIncome = 0;
+
+    let totalExpense = 0;
+
+
+    allData.forEach(row => {
+
+        totalIncome +=
+            row.amountIn;
+
+        totalExpense +=
+            row.amountOut;
+
+    });
+
+
+    if(incomeExpenseChart){
+
+        incomeExpenseChart.destroy();
+
+    }
+
+
+    incomeExpenseChart =
+
+        new Chart(
+
+            canvas,
+
+            {
+
+                type:"doughnut",
+
+                data:{
+
+                    labels:[
+
+                        "Income",
+
+                        "Expense"
+
+                    ],
+
+                    datasets:[
+
+                        {
+
+                            data:[
+
+                                totalIncome,
+
+                                totalExpense
+
+                            ],
+
+                            backgroundColor:[
+
+                                "#16a34a",
+
+                                "#dc2626"
+
+                            ],
+
+                            borderWidth:0
+
+                        }
+
+                    ]
+
+                },
+
+
+                options:{
+
+                    responsive:true,
+
+                    maintainAspectRatio:false,
+
+                    cutout:"68%",
+
+
+                    plugins:{
+
+                        legend:{
+
+                            position:"bottom",
+
+                            labels:{
+
+                                padding:15,
+
+                                usePointStyle:true,
+
+                                font:{
+
+                                    size:12
+
+                                }
+
+                            }
+
+                        },
+
+
+                        tooltip:{
+
+                            callbacks:{
+
+                                label:
+                                    function(context){
+
+                                        return (
+
+                                            " " +
+
+                                            context.label +
+
+                                            ": " +
+
+                                            formatCurrency(
+                                                context.raw
+                                            )
+
+                                        );
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+}
+
+
+/* ==========================================================
+   ESCAPE HTML
+========================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ==========================================================
+   SHOW LOADING
+========================================================== */
+
+function showLoading(show){
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+
+        show
+        ? "flex"
+        : "none";
+
+}
+
+
+/* ==========================================================
+   SHOW ERROR
+========================================================== */
+
+function showError(message){
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    box.innerHTML =
+        message;
+
+
+    box.style.display =
+        "block";
+
+}
+
+
+/* ==========================================================
+   HIDE ERROR
+========================================================== */
+
+function hideError(){
+
+    document.getElementById(
+        "errorBox"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ==========================================================
+   SEARCH INPUT EVENT
+========================================================== */
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    applyFilters
+);
+
+
+/* ==========================================================
+   START WEBSITE
+========================================================== */
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    () => {
+
+        loadData();
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>
